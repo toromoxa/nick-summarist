@@ -3,6 +3,7 @@ import { AiFillAudio, AiFillBulb, AiFillFileText } from "react-icons/ai";
 import { BsStarFill, BsStarHalf } from "react-icons/bs";
 import { BiCrown } from "react-icons/bi";
 import { RiLeafLine } from "react-icons/ri";
+import { auth, db } from "@/lib/firebaseConfig";
 
 const HomePage = () => {
   return (

@@ -1,6 +1,13 @@
 import React from 'react'
 
-const Navbar = () => {
+interface NavbarProps {
+  onLoginClick: () => void;
+  onSignUpClick: () => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({onLoginClick, onSignUpClick}) => {
+  
+
   return (
     <div>
         <nav className="nav">
@@ -9,7 +16,7 @@ const Navbar = () => {
             <img className="nav__img" src="logo.png" alt="logo" />
           </figure>
           <ul className="nav__list--wrapper">
-            <li className="nav__list nav__list--login">Login</li>
+            <li className="nav__list nav__list--login" onClick={onLoginClick}>Login</li>
             <li className="nav__list nav__list--mobile">About</li>
             <li className="nav__list nav__list--mobile">Contact</li>
             <li className="nav__list nav__list--mobile">Help</li>

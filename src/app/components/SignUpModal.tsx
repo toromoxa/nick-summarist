@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { CgClose } from "react-icons/cg";
+import { signUpWithEmailAndPassword } from "@/lib/firebaseAuth";
 
 interface SignUpModalProps {
   closeModal: () => void;
@@ -7,6 +8,22 @@ interface SignUpModalProps {
 }
 
 const SignUpModal: React.FC<SignUpModalProps> = ({closeModal, onOpenLoginModal}) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null); // Reset error state before each sign-up attempt
+
+    try {
+      const user = await signUpWithEmailAndPassword(email, password);
+      console.log("User signed up:", user);
+      closeModal(); // Close modal on successful sign-up
+    } catch (error) {
+      setError("Failed to sign up. Please check your email and password.");
+    }
+  };
 
   const handleOutsideClick = (event: React.MouseEvent) => {
     if ((event.target as HTMLElement).classList.contains("modal-overlay")) {
@@ -48,13 +65,18 @@ const SignUpModal: React.FC<SignUpModalProps> = ({closeModal, onOpenLoginModal})
               <input
                 type="email"
                 placeholder="Email Address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="p-3 text-xs w-full border-2 border-gray rounded-md focus:border-green-500 outline-none"
               />
               <input
                 type="password"
                 placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="p-3 text-xs w-full border-2 border-gray rounded-md focus:border-green-500 outline-none"
               />
+              {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
               <button className="btn mb-6">Sign Up</button>
             </form>
           </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FC } from "react";
+import React, { useState, FC } from "react";
 import { auth, db } from "@/lib/firebaseConfig";
 import Navbar from "../Navbar";
 import Landing from "./Landing";

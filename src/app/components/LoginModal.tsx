@@ -4,6 +4,7 @@ import { FaUser } from "react-icons/fa";
 import { auth } from "@/lib/firebaseConfig";
 import { GoogleAuthProvider, signInWithPopup, getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { logInWithEmailAndPassword } from "@/lib/firebaseAuth";
+import { useRouter } from "next/navigation";
 
 interface LoginModalProps {
   closeModal: () => void;
@@ -14,6 +15,7 @@ const LoginModal: React.FC<LoginModalProps> = ({closeModal, onOpenSignUp}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,6 +25,7 @@ const LoginModal: React.FC<LoginModalProps> = ({closeModal, onOpenSignUp}) => {
       const user = await logInWithEmailAndPassword(email, password);
       console.log("User logged in:", user);
       closeModal(); // Close modal on successful login
+      router.push("/ForYou")
     } catch (error) {
       setError("Failed to log in. Please check your email and password.");
     }
@@ -35,16 +38,18 @@ const LoginModal: React.FC<LoginModalProps> = ({closeModal, onOpenSignUp}) => {
   }
 
   const handleGuestLogin = () => {
-    signInWithEmailAndPassword(auth, 'guest@gmail.com', 'guest123').then((userCredential) => {
+    signInWithEmailAndPassword(auth, 'guest@gmail.com', 'guest123')
+    .then((userCredential) => {
       //Sign In
       const user = userCredential.user;
+      console.log(user);
+      router.push("/ForYou")
+      closeModal();
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
     })
-    console.log("Logged in as guest");
-    closeModal();
   }
 
   const handleGoogleLogin = async () => {
@@ -113,7 +118,7 @@ const LoginModal: React.FC<LoginModalProps> = ({closeModal, onOpenSignUp}) => {
                 className="p-3 text-xs w-full border-2 border-gray rounded-md focus:border-green-500 outline-none"
               />
               {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-              <button className="btn">Login</button>
+              <button type="submit" className="btn">Login</button>
             </form>
           </div>
           <div className="text-sm font-extralight text-blue-700 my-4 mb-15">

@@ -1,13 +1,13 @@
 import React, { useState, FC } from "react";
 import { auth, db } from "@/lib/firebaseConfig";
-import Navbar from "../Navbar";
+import Navbar from "../components/Navbar";
 import Landing from "./Landing";
 import Features from "./Features";
 import Reviews from "./Reviews";
 import Numbers from "./Numbers";
 import Footer from "./Footer";
-import LoginModal from "../LoginModal";
-import SignUpModal from "../SignUpModal";
+import LoginModal from "../components/LoginModal";
+import SignUpModal from "../components/SignUpModal";
 
 const HomePage: FC = () => {
   const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);

@@ -60,7 +60,7 @@ const Features: FC = () => {
               {headings.map((heading, index) => (
                 <div
                   key={index}
-                  className={`statistics__heading ${
+                  className={`statistics__heading flex sm:justify-center lg:justify-start ${
                     index === activeIndex ? " statistics__heading--active" : ""
                   }`}
                 >

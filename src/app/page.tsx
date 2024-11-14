@@ -1,7 +1,7 @@
 "use client"
 import { Provider } from "react-redux";
 import store from "../../store/store";
-import HomePage from "./components/Home/page";
+import HomePage from "./Home/page";
 
 
 export default function Home() {

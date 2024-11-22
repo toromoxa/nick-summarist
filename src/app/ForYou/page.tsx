@@ -1,9 +1,14 @@
+"use client"
+
 import React from "react";
 import { CgPlayButtonO } from "react-icons/cg";
 import SideBar from "../components/SideBar";
 import SearchBar from "../components/SearchBar";
+import useRequireAuth from "@/hooks/useRequireAuth";
 
 const ForYou = () => {
+  useRequireAuth();
+
   return (
     <div className="md:ml-[200px]">
         <SearchBar />

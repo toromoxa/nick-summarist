@@ -1,7 +1,8 @@
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "./firebaseConfig";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 
 // Initialize Firebase auth
-const auth = getAuth();
+// const auth = getAuth();
 
 // Sign in with email and password
 export const logInWithEmailAndPassword = async (email: string, password: string) => {
@@ -22,3 +23,14 @@ export const signUpWithEmailAndPassword = async (email: string, password: string
     throw error;
   }
 };
+
+//Logout
+export const logout = async () => {
+  try {
+    await signOut(auth);
+    console.log("User successfully logged out.");
+  } catch (error) {
+    console.error("Error logging out:", error);
+    throw error;
+  }
+}

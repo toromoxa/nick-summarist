@@ -1,3 +1,6 @@
+"use client";
+import { useRouter } from "next/navigation";
+import { logout } from "@/lib/firebaseAuth";
 import React from "react";
 import { CiBookmark } from "react-icons/ci";
 import { HiOutlineSearch } from "react-icons/hi";
@@ -6,7 +9,19 @@ import { PiHouseLine } from "react-icons/pi";
 import { RiBallPenLine } from "react-icons/ri";
 import { RxGear } from "react-icons/rx";
 
-const SideBar = () => {
+const SideBar: React.FC = () => {
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      router.replace("/"); // Redirect to the home page after logout
+    } catch (error) {
+      console.error("Logout failed:", error);
+      alert("An error occurred while logging out. Please try again.");
+    }
+  };
+
   return (
     <div>
       <div className="sidebar__overlay opacity-0 pointer-events-none fixed top-0 left-0 w-full h-full bg-[#3a4649] z-10 transition-opacity ease-in-out duration-500"></div>
@@ -77,7 +92,9 @@ const SideBar = () => {
               <div className="sidebar__icon--wrapper mr-2">
                 <LuLogOut className="w-6 h-6" />
               </div>
-              <div className="sidebar__link--text">For you</div>
+              <button onClick={handleLogout} className="sidebar__link--text">
+                Log Out
+              </button>
             </a>
           </div>
         </div>

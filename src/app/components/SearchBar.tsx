@@ -4,8 +4,8 @@ import { FiSearch, FiMenu } from "react-icons/fi";
 const SearchBar: React.FC = () => {
   return (
     <div className="search__background bg-[#fff] border-b-[#e1e7ea] border-b-[1px] h-[80px] z-[1]">
-      <div className="search__wrapper relative flex items-center justify-between px-8 max-w-[1070px] mx-auto h-full">
-        <figure className="hidden md:invisible md:flex">
+      <div className="search__wrapper relative flex items-center justify-between px-8 max-w-[1070px] mx-auto h-full flex-row-reverse">
+        <figure className="hidden md:invisible">
           <img src="logo.png" alt="" />
         </figure>
         <div className="search__content flex items-center gap-6 max-w-[340px] w-full mr-3">

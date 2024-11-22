@@ -78,7 +78,7 @@ const LoginModal: React.FC<LoginModalProps> = ({closeModal, onOpenSignUp}) => {
               <figure className="google__icon--mask guest__icon--mask text-2xl absolute left-2">
                 <FaUser />
               </figure>
-              <div className="">Login as a Guest</div>
+              <div className="m-auto">Login as a Guest</div>
             </button>
             <div className="auth__separator w-full flex flex-row items-center my-3">
               <div className="bg-gray-300 h-[2px] w-full mr-6"></div>
@@ -93,7 +93,7 @@ const LoginModal: React.FC<LoginModalProps> = ({closeModal, onOpenSignUp}) => {
                   alt="google"
                 />
               </figure>
-              <div className="">Login with Google</div>
+              <div className="m-auto">Login with Google</div>
             </button>
             <div className="auth__separator w-full flex flex-row items-center my-3">
               <div className="bg-gray-300 h-[2px] w-full mr-6"></div>

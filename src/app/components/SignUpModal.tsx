@@ -54,7 +54,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({closeModal, onOpenLoginModal})
                   alt="google"
                 />
               </figure>
-              <div className="">Sign up with Google</div>
+              <div className="m-auto">Sign up with Google</div>
             </button>
             <div className="auth__separator w-full flex flex-row items-center my-3">
               <div className="bg-gray-300 h-[2px] w-full mr-6"></div>

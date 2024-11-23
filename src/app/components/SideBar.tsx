@@ -1,4 +1,5 @@
 "use client";
+
 import { useRouter } from "next/navigation";
 import { logout } from "@/lib/firebaseAuth";
 import React from "react";
@@ -35,7 +36,7 @@ const SideBar: React.FC = () => {
               href="/ForYou"
               className="sidebar__link--wrapper hover:bg-[#f0efef] flex items-center h-[56px] text-[#032b41] mb-2 cursor-pointer"
             >
-              <div className="sidebar__link--line active:bg-[#2bd97c] w-[6px] h-full mr-4"></div>
+              <div className="sidebar__link--line active:bg-[#2bd97c] w-[6px] h-full mr-4 bg-transparent"></div>
               <div className="sidebar__icon--wrapper mr-2">
                 <PiHouseLine className="w-6 h-6" />
               </div>

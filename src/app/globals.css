@@ -448,6 +448,14 @@ button:disabled {
   font-weight: 500;
 }
 
+/* For You */
+
+.for-you__recommended--books::-webkit-scrollbar {
+  display: none;
+}
+
+/* Responsiveness */
+
 @media (max-width: 768px) {
   .landing__content {
     display: flex;

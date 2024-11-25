@@ -5,6 +5,8 @@ import { CgPlayButtonO } from "react-icons/cg";
 import SideBar from "../components/SideBar";
 import SearchBar from "../components/SearchBar";
 import useRequireAuth from "@/hooks/useRequireAuth";
+import { CiClock2 } from "react-icons/ci";
+import { FaRegStar } from "react-icons/fa6";
 
 interface Book {
   id: string;
@@ -14,10 +16,11 @@ interface Book {
   imageLink: string;
   audioLink: string;
   totalRating: number;
+  averageRating: number;
   keyIdeas: number;
   type: string;
   status: string;
-  subsrciptionRequired: boolean;
+  subscriptionRequired: boolean;
   summary: string;
   tags: string[];
   bookDescription: string;
@@ -28,8 +31,8 @@ const ForYou: React.FC = () => {
   useRequireAuth();
 
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
-  const [recommendedBooks, setRecommendedBooks] = useState<Book | null>(null);
-  const [suggestedBooks, setSuggestedBooks] = useState<Book | null>(null);
+  const [recommendedBooks, setRecommendedBooks] = useState<Book[] | null>(null);
+  const [suggestedBooks, setSuggestedBooks] = useState<Book[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,9 +46,7 @@ const ForYou: React.FC = () => {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data: Book[] = await response.json();
-        console.log("Fetched book data", data[0])
         setSelectedBook(data[0]);
-        console.log(selectedBook);
       } catch (err) {
         console.error("Error fetching book:", err);
         setError("Failed to load book data.");
@@ -54,11 +55,13 @@ const ForYou: React.FC = () => {
 
     const fetchRecommendedBooks = async () => {
       try {
-        const response = await fetch("https://us-central1-summaristt.cloudfunctions.net/getBooks?status=recommended");
+        const response = await fetch(
+          "https://us-central1-summaristt.cloudfunctions.net/getBooks?status=recommended"
+        );
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        const RecData: Book = await response.json();
+        const RecData: Book[] = await response.json();
         console.log("Recommended Books Data:", RecData);
         setRecommendedBooks(RecData); // Assuming the API returns an array of books
       } catch (err) {
@@ -69,11 +72,13 @@ const ForYou: React.FC = () => {
 
     const fetchSuggestedBooks = async () => {
       try {
-        const response = await fetch("https://us-central1-summaristt.cloudfunctions.net/getBooks?status=suggested");
+        const response = await fetch(
+          "https://us-central1-summaristt.cloudfunctions.net/getBooks?status=suggested"
+        );
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        const suggestedData: Book = await response.json();
+        const suggestedData: Book[] = await response.json();
         console.log("Suggested Books Data:", suggestedData);
         setSuggestedBooks(suggestedData); // Assuming the API returns an array of books
       } catch (err) {
@@ -84,10 +89,14 @@ const ForYou: React.FC = () => {
 
     const fetchData = async () => {
       setLoading(true);
-      await Promise.all([fetchSelectedBook(), fetchRecommendedBooks(), fetchSuggestedBooks()]);
+      await Promise.all([
+        fetchSelectedBook(),
+        fetchRecommendedBooks(),
+        fetchSuggestedBooks(),
+      ]);
       setLoading(false);
     };
-  
+
     fetchData();
   }, []);
 
@@ -107,19 +116,19 @@ const ForYou: React.FC = () => {
         <div className="container max-w-[1070px] w-full m-auto px-6">
           <div className="row w-full py-10">
             <div className="for-you__wrapper">
-              <div className="for-you__title text-[#032b41] text-[22px] font-bold mb-5">
+              <div className="for-you__title text-[#032b41] text-[22px] font-bold my-5">
                 Selected just for you
               </div>
               {selectedBook && (
                 <>
                   <a
                     href=""
-                    className="selected__book flex flex-col bg-[#fbefd6] rounded-[4px] mb-6 p-4 gap-6"
+                    className="selected__book flex flex-col bg-[#fbefd6] rounded-[4px] mb-6 p-4 gap-6 md:flex-row"
                   >
-                    <div className="selected__book--subtitle lg:w-[40%] text-[#032b41] w-full md:text-sm">
+                    <div className="selected__book--subtitle lg:w-[40%] text-[#032b41] md:text-lg w-full sm:text-sm">
                       {selectedBook?.subTitle}
                     </div>
-                    <div className="selected__book--line w-[1px] bg-[#bac8ce] hidden lg:flex"></div>
+                    <div className="selected__book--line w-[1px] bg-[#bac8ce] hidden md:flex"></div>
                     <div className="selected__book--content flex gap-4 w-full">
                       <figure className="book__image--wrapper w-[140px] h-[140px] min-w-[140px]">
                         <img
@@ -149,88 +158,96 @@ const ForYou: React.FC = () => {
                   </a>
                 </>
               )}
-              <div className="recommended__books">
+              <div className="recommended__books my-5">
                 <div className="for-you__title text-[#032b41] text-[22px] font-bold">
                   Recommended for you
                 </div>
                 <div className="for-you__subtitle text-[#394547] text-[16px] font-light mb-4">
                   We think you will like these
                 </div>
-                <div className="for-you__recommended--book">
-                  <a className="for-you__recommended--books-link" href="">
-                    <audio src={undefined}></audio>
-                    <figure className="book__image--wrapper">
-                      <img className="book__image" src={undefined} alt="" />
+                <div className="for-you__recommended--books flex flex-row gap-4 overflow-x-auto">
+                  {recommendedBooks && recommendedBooks.map((book) => (
+                    <a key={book.id} className="for-you__recommended--books-link relative pt-8 px-3 rounded-md max-w-[200px] w-full" href="">
+                      {book.subscriptionRequired && (<div className="book__pill absolute top-0 right-0 bg-[#032b41] text-white text-[10px] px-2 rounded-full w-fit h-[18px] flex items-center">Premium</div>)}
+                    <audio src={book.audioLink}></audio>
+                    <figure className="book__image--wrapper w-[172px] h-[172px]">
+                      <img className="book__image w-full h-full" src={book.imageLink} alt="cover art" />
                     </figure>
-                    <div className="recommended__book--title">
-                      How to Win Friends and Influence People
+                    <div className="recommended__book--title text-base font-bold text-[#032b41] my-2">
+                      {book.title}
                     </div>
-                    <div className="recommended__book--author">
-                      Dale Carnegie
+                    <div className="recommended__book--author text-sm text-[#6b757b] font-light mb-2">
+                      {book.author}
                     </div>
-                    <div className="recommended__book--subtitle">
-                      Time Tested advice for the digital age
+                    <div className="recommended__book--subtitle text-sm text-[#394547] font-light mb-2">
+                      {book.subTitle}
                     </div>
-                    <div className="recommended__book--details-wrapper">
-                      <div className="recommended__book--details">
+                    <div className="recommended__book--details-wrapper flex gap-2">
+                      <div className="recommended__book--details flex items-center gap-1 text-sm font-light text-[#6b757b]">
                         <div className="recommended__book--details-icon">
-                          Clock Image
+                          {<CiClock2 />}
                         </div>
                         <div className="recommended__book--details-text">
                           03:24
                         </div>
                       </div>
-                      <div className="recommended__book--details">
+                      <div className="recommended__book--details flex items-center gap-1 text-sm font-light text-[#6b757b]">
                         <div className="recommended__book--details-icon">
-                          Star Image
+                        {<FaRegStar />} 
                         </div>
                         <div className="recommended__book--details-text">
-                          4.3
+                          {book.averageRating}
                         </div>
                       </div>
                     </div>
                   </a>
+                  ))}
                 </div>
               </div>
               <div className="recommended__books">
                 <div className="for-you__title text-[#032b41] text-[22px] font-bold">
                   Suggested Books
                 </div>
-                <div className="for-you__subtitle text-[#394547] text-[22px] font-light mb-4">
+                <div className="for-you__subtitle text-[#394547] text-[16px] font-light mb-4">
                   Browse those books
                 </div>
-                <div className="for-you__recommended--book">
-                  <a className="for-you__recommended--books-link" href="">
-                    <audio src={undefined}></audio>
-                    <figure className="book__image--wrapper">
-                      <img className="book__image" src={undefined} alt="" />
+                <div className="for-you__recommended--books flex flex-row gap-4 overflow-x-auto">
+                  {suggestedBooks && suggestedBooks.map((book) => (
+                    <a key={book.id} className="for-you__recommended--books-link relative pt-8 px-3 rounded-md max-w-[200px] w-full" href="">
+                    {book.subscriptionRequired && (<div className="book__pill absolute top-0 right-0 bg-[#032b41] text-white text-[10px] px-2 rounded-full w-fit h-[18px] flex items-center">Premium</div>)}
+                    <audio src={book.audioLink}></audio>
+                    <figure className="book__image--wrapper w-[172px] h-[172px]">
+                      <img className="book__image w-full h-full" src={book.imageLink} alt="cover art" />
                     </figure>
-                    <div className="recommended__book--title">Zero to One</div>
-                    <div className="recommended__book--author">
-                      Peter Thiel with Blake Masters
+                    <div className="recommended__book--title text-base font-bold text-[#032b41] my-2">
+                      {book.title}
                     </div>
-                    <div className="recommended__book--subtitle">
-                      Notes on Startups, or How to Build the Future
+                    <div className="recommended__book--author text-sm text-[#6b757b] font-light mb-2">
+                      {book.author}
                     </div>
-                    <div className="recommended__book--details-wrapper">
-                      <div className="recommended__book--details">
+                    <div className="recommended__book--subtitle text-sm text-[#394547] font-light mb-2">
+                      {book.subTitle}
+                    </div>
+                    <div className="recommended__book--details-wrapper flex gap-2">
+                      <div className="recommended__book--details flex items-center gap-1 text-sm font-light text-[#6b757b]">
                         <div className="recommended__book--details-icon">
-                          Clock Image
+                          {<CiClock2 />}
                         </div>
                         <div className="recommended__book--details-text">
                           03:24
                         </div>
                       </div>
-                      <div className="recommended__book--details">
+                      <div className="recommended__book--details flex items-center gap-1 text-sm font-light text-[#6b757b]">
                         <div className="recommended__book--details-icon">
-                          Star Image
+                        {<FaRegStar />} 
                         </div>
                         <div className="recommended__book--details-text">
-                          4.3
+                          {book.averageRating}
                         </div>
                       </div>
                     </div>
                   </a>
+                  ))}
                 </div>
               </div>
             </div>

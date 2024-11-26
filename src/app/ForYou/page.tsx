@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { CgPlayButtonO } from "react-icons/cg";
+import Link from "next/link";
 import SideBar from "../components/SideBar";
 import SearchBar from "../components/SearchBar";
 import useRequireAuth from "@/hooks/useRequireAuth";
+import { CgPlayButtonO } from "react-icons/cg";
 import { CiClock2 } from "react-icons/ci";
 import { FaRegStar } from "react-icons/fa6";
 
@@ -121,8 +122,8 @@ const ForYou: React.FC = () => {
               </div>
               {selectedBook && (
                 <>
-                  <a
-                    href=""
+                  <Link
+                    href={`/InsideBook/${selectedBook.id}`}
                     className="selected__book flex flex-col bg-[#fbefd6] rounded-[4px] mb-6 p-4 gap-6 md:flex-row"
                   >
                     <div className="selected__book--subtitle lg:w-[40%] text-[#032b41] md:text-lg w-full sm:text-sm">
@@ -155,7 +156,7 @@ const ForYou: React.FC = () => {
                       </div>
                     </div>
                     <audio src={selectedBook.audioLink}></audio>
-                  </a>
+                  </Link>
                 </>
               )}
               <div className="recommended__books my-5">
@@ -167,7 +168,7 @@ const ForYou: React.FC = () => {
                 </div>
                 <div className="for-you__recommended--books flex flex-row gap-4 overflow-x-auto">
                   {recommendedBooks && recommendedBooks.map((book) => (
-                    <a key={book.id} className="for-you__recommended--books-link relative pt-8 px-3 rounded-md max-w-[200px] w-full" href="">
+                    <Link key={book.id} className="for-you__recommended--books-link relative pt-8 px-3 rounded-md max-w-[200px] w-full" href={`/InsideBook/${book.id}`}>
                       {book.subscriptionRequired && (<div className="book__pill absolute top-0 right-0 bg-[#032b41] text-white text-[10px] px-2 rounded-full w-fit h-[18px] flex items-center">Premium</div>)}
                     <audio src={book.audioLink}></audio>
                     <figure className="book__image--wrapper w-[172px] h-[172px]">
@@ -200,7 +201,7 @@ const ForYou: React.FC = () => {
                         </div>
                       </div>
                     </div>
-                  </a>
+                  </Link>
                   ))}
                 </div>
               </div>
@@ -213,7 +214,7 @@ const ForYou: React.FC = () => {
                 </div>
                 <div className="for-you__recommended--books flex flex-row gap-4 overflow-x-auto">
                   {suggestedBooks && suggestedBooks.map((book) => (
-                    <a key={book.id} className="for-you__recommended--books-link relative pt-8 px-3 rounded-md max-w-[200px] w-full" href="">
+                    <Link key={book.id} className="for-you__recommended--books-link relative pt-8 px-3 rounded-md max-w-[200px] w-full" href={`/InsideBook/${book.id}`}>
                     {book.subscriptionRequired && (<div className="book__pill absolute top-0 right-0 bg-[#032b41] text-white text-[10px] px-2 rounded-full w-fit h-[18px] flex items-center">Premium</div>)}
                     <audio src={book.audioLink}></audio>
                     <figure className="book__image--wrapper w-[172px] h-[172px]">
@@ -246,7 +247,7 @@ const ForYou: React.FC = () => {
                         </div>
                       </div>
                     </div>
-                  </a>
+                  </Link>
                   ))}
                 </div>
               </div>
